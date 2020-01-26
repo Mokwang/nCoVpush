@@ -2,7 +2,21 @@ import os
 import re
 import json
 import time
+import logging
 import requests
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(levelname)-7s: %(asctime)s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    filename='Runlog.log',
+                    filemode='w')
+
+console = logging.StreamHandler()
+formatter = logging.Formatter('%(levelname)-7s: %(message)s')
+logger = logging.getLogger('')
+console.setLevel(logging.DEBUG)
+console.setFormatter(formatter)
+logger.addHandler(console)
 
 url = "https://3g.dxy.cn/newh5/view/pneumonia"
 reg = r'<script id="getTimelineService">.+?window.getTimelineService\s=\s(.*?\])}catch\(e\){}<\/script>'
@@ -21,10 +35,10 @@ def get_data(urlx, regx):
     except AssertionError:
         pass
     data = format.findall(webdata.content.decode())
-    # print(data)
+    # logger.info(data)
     if data:
         data = eval(data[0])
-        # print(data)
+        # logger.info(data)
         for item in data:
             data_id = item["id"]
             all_data[data_id] = item
@@ -55,7 +69,7 @@ def check_latest_data(backup_file, new_data):
                 latest_data_list.append(values)
         return latest_data_list
     else:
-        print(backup_file + " not exists, init env, will not send the msg this time")
+        logger.info(backup_file + " not exists, init env, will not send the msg this time")
         write_data_to_file(backup_file, new_data)
         return
 
@@ -64,11 +78,11 @@ def post_data(secret_key, **kwargs):
     address = "https://sc.ftqq.com/%s.send" % secret_key
     data = {"text": "%s" % kwargs["title"],
             "desp": "###%s  \n###%s  \n###%s  \n###%s  \n" % (
-            kwargs["summary"], kwargs["pub_date_str"], kwargs["info_source"], kwargs["source_url"])
+                kwargs["summary"], kwargs["pub_date_str"], kwargs["info_source"], kwargs["source_url"])
             }
     resp = requests.post(address, data=data)
     assert resp.status_code == 200
-    print(resp.content)
+    logger.info(resp.content)
 
 
 def main(backup_file, sckey):
@@ -91,8 +105,8 @@ def main(backup_file, sckey):
             old_data[id_num] = item
             write_data_to_file(backup_file, old_data)
 
-        print(latest_data)
-    print("end")
+        logger.info(latest_data)
+    logger.info("nothing new items")
 
 
 if __name__ == "__main__":
