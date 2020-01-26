@@ -110,7 +110,7 @@ def main(backup_file, sckey):
 
 
 if __name__ == "__main__":
-    sckey = "SCU77930T7c74bd2ae6168e9b00e6d30f75ccd6fd5e2110a3815d8"
+    sckey = "YOUR SCKEY" # 填写sckey
     data_back_file = "nCoV_data_backup.json"
     while True:
         main(data_back_file, sckey=sckey)
