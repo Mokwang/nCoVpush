@@ -1,0 +1,7 @@
+version: "1"
+service:
+  nCoVpush:
+    image: python:3.7-alpine
+    volumes:
+      - "/root/nCovpush:/code/"
+restart:always
