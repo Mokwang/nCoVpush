@@ -77,8 +77,8 @@ def check_latest_data(backup_file, new_data):
 def post_data(secret_key, **kwargs):
     address = "https://sc.ftqq.com/%s.send" % secret_key
     data = {"text": "%s" % kwargs["title"],
-            "desp": "###%s  \n###%s  \n###%s  \n###%s  \n" % (
-                kwargs["summary"], kwargs["pub_date_str"], kwargs["info_source"], kwargs["source_url"])
+            "desp": "###%s  \n###%s  \n###%s  \n###%s  \n###%s  \n" % (
+                kwargs["summary"], kwargs["pub_date_str"], kwargs["info_source"], kwargs["source_url"], url)
             }
     resp = requests.post(address, data=data)
     assert resp.status_code == 200
