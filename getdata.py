@@ -52,11 +52,13 @@ def get_data(urlx, regx):
 def write_data_to_file(file, content):
     with open(file, 'w+') as f:
         json.dump(content, f, indent=4)
+    f.close()
 
 
 def read_data_from_file(file):
     with open(file, 'r+') as f:
         data = json.load(f)
+    f.close()
     return data
 
 
@@ -100,8 +102,8 @@ def main(backup_file, sckey):
             summary = item["summary"]
             info_source = item["infoSource"]
             source_url = item["sourceUrl"]
-            post_data(sckey, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
-                      source_url=source_url)
+            # post_data(sckey, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
+            #           source_url=source_url)
             old_data[id_num] = item
             write_data_to_file(backup_file, old_data)
 
