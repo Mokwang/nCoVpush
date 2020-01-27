@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO,
                     filemode='w')
 
 console = logging.StreamHandler()
-formatter = logging.Formatter('%(levelname)-7s: %(message)s')
+formatter = logging.Formatter('%(asctime)s|%(levelname)-7s: %(message)s')
 logger = logging.getLogger('')
 console.setLevel(logging.DEBUG)
 console.setFormatter(formatter)
