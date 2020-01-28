@@ -24,10 +24,6 @@ reg = r'<script id="getTimelineService">.+?window.getTimelineService\s=\s(.*?\])
 # 统计数据reg
 data_reg = r'[0-9]\);">(\d+)<\/span> 例'
 
-json_data = {
-    "news": {}
-}
-
 
 def get_data(urlx, regx):
     all_data = {}
@@ -132,7 +128,7 @@ def main(backup_file, sckey_list):
             write_data_to_file(backup_file, old_data)
 
         logger.info(latest_data)
-    logger.info("nothing new items")
+    logger.info("no new item")
 
 
 def get_key_list(file):
