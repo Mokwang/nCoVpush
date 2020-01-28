@@ -119,8 +119,8 @@ def main(backup_file, sckey_list):
             source_url = item["sourceUrl"]
             confirmed_count = num_data[0]
             suspected_count = num_data[1]
-            cured_count = num_data[2]
-            dead_count = num_data[3]
+            cured_count = num_data[3]
+            dead_count = num_data[2]
             post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
                       source_url=source_url, confirmed_count=confirmed_count, suspected_count=suspected_count,
                       cured_count=cured_count, dead_count=dead_count)
