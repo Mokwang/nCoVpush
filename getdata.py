@@ -23,6 +23,7 @@ url = "https://3g.dxy.cn/newh5/view/pneumonia"
 reg = r'<script id="getTimelineService">.+?window.getTimelineService\s=\s(.*?\])}catch\(e\){}<\/script>'
 # 统计数据reg
 data_reg = r'[0-9]\);">(\d+)<\/span> 例'
+data_reg= r'confirmedCount":(\d+),"suspectedCount":(\d+),"curedCount":(\d+),"deadCount":(\d+),"virus"'
 
 
 def get_data(urlx, regx):
@@ -96,7 +97,7 @@ def parse_num_data(web_page, regx):
     re_format = re.compile(regx)
     data = re_format.findall(web_page)
     if data:
-        return data
+        return data[0]
     else:
         return 0, 0, 0, 0
 
@@ -119,11 +120,11 @@ def main(backup_file, sckey_list):
             source_url = item["sourceUrl"]
             confirmed_count = num_data[0]
             suspected_count = num_data[1]
-            cured_count = num_data[3]
-            dead_count = num_data[2]
-            post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
-                      source_url=source_url, confirmed_count=confirmed_count, suspected_count=suspected_count,
-                      cured_count=cured_count, dead_count=dead_count)
+            cured_count = num_data[2]
+            dead_count = num_data[3]
+            # post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
+            #           source_url=source_url, confirmed_count=confirmed_count, suspected_count=suspected_count,
+            #           cured_count=cured_count, dead_count=dead_count)
             old_data[id_num] = item
             write_data_to_file(backup_file, old_data)
 
