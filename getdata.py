@@ -22,7 +22,8 @@ url = "https://3g.dxy.cn/newh5/view/pneumonia"
 # 实时消息推送reg
 reg = r'<script id="getTimelineService">.+?window.getTimelineService\s=\s(.*?\])}catch\(e\){}<\/script>'
 # 统计数据reg
-data_reg = r'confirmedCount":(\d+),"suspectedCount":(\d+),"curedCount":(\d+),"deadCount":(\d+),"virus"'
+# [确诊， 疑似， 治愈， 死亡， 重症， 疑似较昨日新增， 确诊较昨日新增， 治愈较昨日新增， 死亡较昨日新增， 重症较昨日新增]
+data_reg = r'confirmedCount":(\d+),"suspectedCount":(\d+),"curedCount":(\d+),"deadCount":(\d+),"seriousCount":(\d+),"suspectedIncr":(\d+),"confirmedIncr":(\d+),"curedIncr":(\d+),"deadIncr":(\d+),"seriousIncr":(\d+),"virus'
 
 
 def get_data(urlx, regx):
@@ -80,9 +81,10 @@ def post_data(secret_key_list, **kwargs):
     for secret_key in secret_key_list:
         address = "https://sc.ftqq.com/%s.send" % secret_key.strip()
         data = {"text": "%s" % kwargs["title"],
-                "desp": "####%s  \n#####确诊:%s例，疑似:%s例，死亡:%s例，治愈:%s例  \n#####消息获取时间：%s  \n#####消息来源：%s  \n######消息链接：%s  \n######丁香园链接：%s  \n" % (
-                    kwargs["summary"], kwargs["confirmed_count"], kwargs["suspected_count"], kwargs["dead_count"],
-                    kwargs["cured_count"], kwargs["pub_date_str"], kwargs["info_source"], kwargs["source_url"], url)
+                "desp": "####%s  \n#####今日数据：确诊:%s例，疑似:%s例，重症:%s例，死亡:%s例，治愈:%s例  \n#####较昨日数据变化：确诊新增:%s例，疑似新增:%s例，重症新增:%s例，死亡新增:%s例，治愈新增:%s例  \n#####消息获取时间：%s  \n#####消息来源：%s  \n######消息链接：%s  \n######丁香园链接：%s  \n" % (
+                    kwargs["summary"], kwargs["confirmed_count"], kwargs["suspected_count"], kwargs["serious_count"], kwargs["dead_count"],
+                    kwargs["cured_count"], kwargs["confirmed_inc"], kwargs["suspected_inc"], kwargs["serious_inc"], kwargs["dead_inc"],
+                    kwargs["cured_inc"], kwargs["pub_date_str"], kwargs["info_source"], kwargs["source_url"], url)
                 }
         try:
             resp = requests.post(address, data=data)
@@ -117,13 +119,11 @@ def main(backup_file, sckey_list):
             summary = item["summary"]
             info_source = item["infoSource"]
             source_url = item["sourceUrl"]
-            confirmed_count = num_data[0]
-            suspected_count = num_data[1]
-            cured_count = num_data[2]
-            dead_count = num_data[3]
+            confirmed_count, suspected_count, cured_count, dead_count, serious_count, suspected_inc, confirmed_inc, cured_inc, dead_inc, serious_inc = num_data
             post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
-                      source_url=source_url, confirmed_count=confirmed_count, suspected_count=suspected_count,
-                      cured_count=cured_count, dead_count=dead_count)
+                      source_url=source_url, confirmed_count=confirmed_count, suspected_count=suspected_count, serious_count=serious_count,
+                      cured_count=cured_count, dead_count=dead_count, confirmed_inc=confirmed_inc, suspected_inc=suspected_inc, serious_inc=serious_inc,
+                      cured_inc=cured_inc, dead_inc=dead_inc)
             old_data[id_num] = item
             write_data_to_file(backup_file, old_data)
 
