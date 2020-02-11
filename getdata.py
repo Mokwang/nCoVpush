@@ -106,10 +106,10 @@ def parse_num_data(web_page, regx):
 def main(backup_file, sckey_list):
     # 从丁香园得到数据，更新到json_data
     new_data, web_page = get_data(url, reg)
-    old_data = read_data_from_file(backup_file)
     # 和backup文件对比，确认是否有数据更新, 推送出最新的数据
     # 如果backup文件不存在则将所有数据写入文件，不推送消息
     latest_data = check_latest_data(backup_file, new_data)
+    old_data = read_data_from_file(backup_file)
     num_data = parse_num_data(web_page, regx=data_reg)
     if latest_data and new_data:
         for item in latest_data:
