@@ -139,7 +139,7 @@ def get_key_list(file):
 
 
 if __name__ == "__main__":
-    sckey_file = "sckeys"
+    sckey_file = "sckey_file"
     data_back_file = "nCoV_data_backup.json"
     sckey_list = get_key_list(sckey_file)
     while True:
