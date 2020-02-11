@@ -11,5 +11,5 @@
 > 使用方法：
 >+   在[server酱](http://sc.ftqq.com/3.version)上注册并绑定微信，可以在[发送消息](http://sc.ftqq.com/?c=code)页面填写内容，确认消息能成功推送
 >+   访问链接：http://34.92.95.115:8000/sckey/?key=$YOURSECKEY
->+   返回`key save success $YOURSECKEY`表示添加成功
+>+   返回`key save success "$YOURSECKEY"`表示添加成功
   
