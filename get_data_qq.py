@@ -121,35 +121,38 @@ def parse_num_data(num_date):
 
 def main(backup_file, sckey_list):
     # 从丁香园得到数据，更新到json_data
-    all_data, article_data, add_num_data = get_data(url, reg)
-    # 和backup文件对比，确认是否有数据更新, 推送出最新的数据
-    # 如果backup文件不存在则将所有数据写入文件，不推送消息
-    latest_data = check_latest_data(backup_file, article_data)
-    old_data = read_data_from_file(backup_file)
-    num_data = parse_num_data(add_num_data)
-    if latest_data and all_data:
-        for item in latest_data:
-            id_num = item["cmsId"]
-            pub_date_str = item["publish_time"]
-            title = item["title"]
-            summary = item["desc"]
-            info_source = item["media"]
-            source_url = item["url"]
-            try:
-                confirm_inc, suspect_inc, dead_inc, heal_inc, importedCase_inc = num_data
-                post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
-                          source_url=source_url, confirmed_inc=confirm_inc, suspected_inc=suspect_inc,
-                          cured_inc=heal_inc, dead_inc=dead_inc, importedCase=importedCase_inc)
-            except Exception as err:
-                logging.error(err)
-                # logging.debug(num_data)
-                post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
-                          source_url=source_url)
-            old_data[id_num] = item
-            write_data_to_file(backup_file, old_data)
+    data = get_data(url, reg)
+    if data:
+        all_data, article_data, add_num_data = data
+        # 和backup文件对比，确认是否有数据更新, 推送出最新的数据
+        # 如果backup文件不存在则将所有数据写入文件，不推送消息
+        latest_data = check_latest_data(backup_file, article_data)
+        old_data = read_data_from_file(backup_file)
+        num_data = parse_num_data(add_num_data)
+        if latest_data and all_data:
+            for item in latest_data:
+                id_num = item["cmsId"]
+                pub_date_str = item["publish_time"]
+                title = item["title"]
+                summary = item["desc"]
+                info_source = item["media"]
+                source_url = item["url"]
+                try:
+                    confirm_inc, suspect_inc, dead_inc, heal_inc, importedCase_inc = num_data
+                    post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
+                              source_url=source_url, confirmed_inc=confirm_inc, suspected_inc=suspect_inc,
+                              cured_inc=heal_inc, dead_inc=dead_inc, importedCase=importedCase_inc)
+                except Exception as err:
+                    logging.error(err)
+                    # logging.debug(num_data)
+                    post_data(sckey_list, title=title, pub_date_str=pub_date_str, summary=summary, info_source=info_source,
+                              source_url=source_url)
+                old_data[id_num] = item
+                write_data_to_file(backup_file, old_data)
 
-        logger.info(latest_data)
-    logger.info("no new item")
+            logger.info(latest_data)
+        logger.info("no new item")
+    logger.warning("no data get")
 
 
 def get_key_list(file):
