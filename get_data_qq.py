@@ -2,6 +2,7 @@ import os
 import re
 import json
 import time
+import random
 import logging
 import requests
 
@@ -18,7 +19,7 @@ console.setLevel(logging.DEBUG)
 console.setFormatter(formatter)
 logger.addHandler(console)
 
-url = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_other&callback=jQuery341048941168800821044_1583926995704&_=1583926995705"
+url = "https://view.inews.qq.com/g2/getOnsInfo"
 # 实时消息推送reg
 reg = r'\(\{\"ret\":0,\"data\":\"(.*)\"\}\)'
 # 统计数据reg
@@ -32,10 +33,11 @@ def get_data(urlx, regx):
     try:
         param = {
             "name": "disease_other",
-            "callback": "jQuery341048941168800821044",
+            "callback": "jQuery3410489411688008%s" % random.randint(10000, 99999),
             "_": round(time.time())
         }
-        webdata = requests.get(urlx, params=json.dumps(param))
+        webdata = requests.get(urlx, params=param)
+        print(webdata)
         assert webdata.status_code == 200
     except AssertionError as e:
         logger.error(e)
