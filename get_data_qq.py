@@ -37,7 +37,8 @@ def get_data(urlx, regx):
         }
         webdata = requests.get(urlx, params=json.dumps(param))
         assert webdata.status_code == 200
-    except AssertionError:
+    except AssertionError as e:
+        logger.error(e)
         pass
     web_page = webdata.content.decode()
     data = re_format.findall(webdata.content.decode())
