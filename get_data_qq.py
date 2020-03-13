@@ -41,6 +41,7 @@ def get_data(urlx, regx):
         logger.error(e)
         pass
     web_page = webdata.content.decode()
+    logger.info(web_page)
     data = re_format.findall(webdata.content.decode())
     # logger.info(data)
     if data:
