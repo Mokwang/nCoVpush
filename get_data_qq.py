@@ -37,7 +37,6 @@ def get_data(urlx, regx):
             "_": round(time.time())
         }
         webdata = requests.get(urlx, params=param)
-        print(webdata)
         assert webdata.status_code == 200
     except AssertionError as e:
         logger.error(e)
