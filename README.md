@@ -1,3 +1,5 @@
+# 疫情得到控制，代码不再维护
+
 # nCoVpush
 抓取丁香园实时疫情信息，通过[server酱](http://sc.ftqq.com/3.version)推送消息到微信
 
